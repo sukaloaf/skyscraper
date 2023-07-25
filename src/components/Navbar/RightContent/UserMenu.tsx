@@ -1,3 +1,5 @@
+import { authModalState } from "@/atoms/authModalAtom";
+import { CommunityState } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -17,12 +19,21 @@ import React from "react";
 import { BiSolidUser } from "react-icons/bi";
 import { FaUserAstronaut, FaUserCircle } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
+import { useSetRecoilState } from "recoil";
 
 type UserMenuProps = {
   user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+  const resetCommunityState = useSetRecoilState(CommunityState);
+
+  const logout = async () => {
+    await signOut(auth);
+    resetCommunityState();
+    // clear community state
+  };
+
   return (
     <Menu>
       <MenuButton
@@ -80,7 +91,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           fontWeight={700}
           bg="brand.100"
           _hover={{ bg: "brand.200" }}
-          onClick={() => signOut(auth)}
+          onClick={logout}
         >
           <Flex align="center">
             <Icon color="brand.300" fontSize={20} mr={2} as={FiLogOut} />
