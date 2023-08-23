@@ -42,10 +42,10 @@ const CreatePostLink: React.FC = () => {
         _hover={{
           bg: "brand.100",
           border: "1px solid",
-          borderColor: "brand.400",
+          borderColor: "brand.300",
         }}
         bg="brand.100"
-        borderColor="brand.300"
+        borderColor="brand.200"
         height="36px"
         borderRadius={4}
         mr={4}
