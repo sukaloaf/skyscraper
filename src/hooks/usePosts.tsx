@@ -18,7 +18,7 @@ const usePosts = () => {
     try {
       // check if there is an image, delete if it exists
       if (post.imageURL) {
-        const imageRef = ref(storage, `posts/${post.id}/image`);
+        const imageRef = ref(storage, `post/${post.id}/image`);
         await deleteObject(imageRef);
       }
 
