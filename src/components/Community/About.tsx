@@ -1,11 +1,22 @@
 import { Community } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
-import { Box, Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
+import useSelectFile from "@/hooks/useSelectFile";
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Image,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { IoCamera } from "react-icons/io5";
 import { RiCakeLine } from "react-icons/ri";
 
 type AboutProps = {
@@ -15,7 +26,11 @@ type AboutProps = {
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const selectedFileRef = useRef<string>();
+  const selectedFileRef = useRef<HTMLInputElement>(null);
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
+  const [uploadImage, setUploadImage] = useState(false);
+  const onUpdateImage = async () => {};
+
   return (
     <Box position="sticky" top="14px">
       <Flex
@@ -86,7 +101,33 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                   >
                     Change Image
                   </Text>
+                  {communityData.imageURL || selectedFile ? (
+                    <Image
+                      src={selectedFile || communityData.imageURL}
+                      borderRadius="fulll"
+                      boxSize="40px"
+                      alt="Community Image"
+                    />
+                  ) : (
+                    <Icon color="brand.300" fontSize={40} as={IoCamera} />
+                  )}
                 </Flex>
+                {selectedFile &&
+                  (uploadImage ? (
+                    <Spinner />
+                  ) : (
+                    <Text cursor="pointer" onClick={onUpdateImage}>
+                      Save Changes
+                    </Text>
+                  ))}
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/x-png, image/gif, image/jpeg"
+                  hidden
+                  ref={selectedFileRef}
+                  onChange={onSelectFile}
+                />
               </Stack>
             </>
           )}
