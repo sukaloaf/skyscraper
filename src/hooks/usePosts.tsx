@@ -1,6 +1,6 @@
 import { Post, postState } from "@/atoms/postAtoms";
 import { firestore, storage } from "@/firebase/clientApp";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, writeBatch } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import React from "react";
 import { useRecoilState } from "recoil";
@@ -10,7 +10,41 @@ type usePostsProps = {};
 const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
 
-  const onVote = async () => {};
+  const onVote = async (post: Post, vote: number, communityId: string) => {
+    // check for a user -> if not, open auth modal
+
+    try {
+      const { voteStatus } = post;
+      const existingVote = postStateValue.postVotes.find(
+        (vote) => vote.postId === post.id
+      );
+
+      const batch = writeBatch(firestore);
+      const updatedPost = { ...post };
+      const updatedPosts = [...postStateValue.posts];
+      const updatedPostVotes = [...postStateValue.postVotes];
+
+      if (!existingVote) {
+        // add/subtract 1 to/from post.voteStatus
+        // create a new PostVote document
+      }
+      // existing vote - they have voted on the post before
+      else {
+        // removing their vote(up -> neutral OR down -> neutral)
+        if (removingVote) {
+          // add.subtract 1 to/from post.voteStatus
+          // delete the postVost document
+        }
+        // flipping their vote (up -> down OR down -> up)
+        else {
+          // add/subtract 2 to/from post.voteStatus
+          // updating the existing postVote document
+        }
+      }
+    } catch (error) {
+      console.log("onVote error", error);
+    }
+  };
 
   const onSelectPost = () => {};
 

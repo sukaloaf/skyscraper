@@ -18,8 +18,17 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
     <Flex direction="column" width="100%" height="73px">
       <Flex justify="center" flexGrow={1}>
         <Flex width="95%" maxWidth="860px">
-          {communityData.imageURL ? (
-            <Image alt="Clique Header Image" />
+          {communityStateValue.currentCommunity?.imageURL ? (
+            <Image
+              src={communityStateValue.currentCommunity.imageURL}
+              alt="Clique Header Image"
+              borderRadius="full"
+              boxSize="66px"
+              position="relative"
+              border="4px solid"
+              borderColor="brand.300"
+              top={2}
+            />
           ) : (
             <Icon
               color="brand.300"
